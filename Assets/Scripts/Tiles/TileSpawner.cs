@@ -5,6 +5,7 @@ using UnityEngine;
 public class TileSpawner : MonoBehaviour {
     public static TileSpawner instance;
 
+    public GameController gc;
     public bool spawnObject = true;
     private Tile lastTile;
 
@@ -15,10 +16,6 @@ public class TileSpawner : MonoBehaviour {
 
     //Might not need
     private List<Tile> spawnedTiles = new List<Tile>();
-
-    const float startSpeed = 0.05f;
-    float speed;
-    const float maxSpeed = 0.1f;
 
     [SerializeField]
     private Transform spawnPosition;
@@ -37,7 +34,7 @@ public class TileSpawner : MonoBehaviour {
             }
         }
         numberSpawnedTiles = 0;
-        speed = startSpeed;
+        gc = GameController.instance;
 	}
 	
 	void LateUpdate() {
@@ -62,19 +59,23 @@ public class TileSpawner : MonoBehaviour {
     }
     IEnumerator SlowPlayer()
     {
-        float slowedSpeed = 0;
         float start = Time.time;
         float elapsed = 0;
         while(elapsed < 2)
         {
-            if (elapsed < 1) slowedSpeed = 0.01f;
-            else slowedSpeed = Mathf.Clamp( slowedSpeed + Time.deltaTime * 0.5f,0,speed);
+            if (elapsed < 1)  gc.adjustedSpeed= 0.01f;
+            else gc.adjustedSpeed = Mathf.Clamp( gc.adjustedSpeed + Time.deltaTime * 1f,0,gc.speed);
             foreach(Tile t in spawnedTiles)
             {
-                t.tMover.speed = slowedSpeed;
+                t.tMover.speed = gc.adjustedSpeed;
             }
             elapsed = Time.time - start;
             yield return new WaitForSeconds(0.01f);
+        }
+        gc.adjustedSpeed = gc.speed;
+        foreach (Tile t in spawnedTiles)
+        {
+            t.tMover.speed = gc.adjustedSpeed;
         }
     }
     private Tile SpawnTile(Vector3 spawnPosition)
@@ -92,7 +93,7 @@ public class TileSpawner : MonoBehaviour {
             cumulativeChance += tileSpawnChances[i];
         }
         Tile t = (Instantiate(tiles[indexToSpawn], spawnPosition, Quaternion.Euler(90, 0, 0))).GetComponent<Tile>();
-        t.tMover.speed = speed;
+        t.tMover.speed = gc.speed;
         return t;
     } 
 }

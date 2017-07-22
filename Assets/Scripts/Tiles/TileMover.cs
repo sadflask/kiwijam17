@@ -14,6 +14,6 @@ public class TileMover : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        rb.position += Vector3.back * speed;
+        rb.position += Vector3.back * speed * Time.deltaTime;
 	}
 }
