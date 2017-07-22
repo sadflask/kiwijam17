@@ -7,14 +7,15 @@ public class PlayerMove : MonoBehaviour {
     //-1 0 1
     private int lane;
 
-    private Vector3 startPosition;
-    private Vector3 targetPosition;
+    private Vector3 startPosition, targetPosition;
+    private Quaternion startRotation;
 
     bool jumping, ducking;
 
     void Awake()
     {
         startPosition = transform.position;
+        startRotation = transform.rotation;
         targetPosition = startPosition;
     }
 	// Update is called once per frame
@@ -33,7 +34,7 @@ public class PlayerMove : MonoBehaviour {
         {
             if (!(jumping || ducking)) StartCoroutine(Jump());
             //Jump thing
-        } else if (Input.GetKeyUp(KeyCode.PageDown))
+        } else if (Input.GetKeyUp(KeyCode.DownArrow))
         {
             //Slide thing
             if (!(jumping || ducking)) StartCoroutine(Duck());
@@ -59,11 +60,15 @@ public class PlayerMove : MonoBehaviour {
         ducking = true;
         float start = Time.time;
         float elapsed = 0;
-        while (elapsed < 0.5f)
+        while (elapsed < 1)
         {
+            targetPosition.y = 0.25f * elapsed * (elapsed -1) + 0.15f;
+            if (elapsed < 0.25f) transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x - 5, 0, 0);
+            else if (elapsed > 0.75f) transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x + 5, 0, 0);
             yield return new WaitForSeconds(0.01f);
             elapsed = Time.time - start;
         }
+        transform.rotation = startRotation;
         ducking = false;
     }
 
