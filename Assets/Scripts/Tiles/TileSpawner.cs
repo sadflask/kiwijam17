@@ -11,6 +11,8 @@ public class TileSpawner : MonoBehaviour {
     [SerializeField]
     private GameObject[] tiles;
 
+    private float[] tileSpawnChances = { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f };
+
     //Might not need
     private GameObject[] spawnedTiles;
 
@@ -50,7 +52,18 @@ public class TileSpawner : MonoBehaviour {
     }
     private GameObject SpawnTile(Vector3 spawnPosition)
     {
-        int indexToSpawn = Random.Range(0, tiles.Length);
+        int indexToSpawn = 0;
+        float rng = Random.Range(0, 1.0f);
+        float cumulativeChance = 0;
+        for(int i=0; i<tiles.Length; i++)
+        {
+            if(rng < tileSpawnChances[i]+cumulativeChance)
+            {
+                indexToSpawn = i;
+                break;
+            }
+            cumulativeChance += tileSpawnChances[i];
+        }
         GameObject g = Instantiate(tiles[indexToSpawn], spawnPosition, Quaternion.Euler(90,0,0));
         return g;
     } 
