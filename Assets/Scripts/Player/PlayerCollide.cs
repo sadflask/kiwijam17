@@ -7,9 +7,10 @@ public class PlayerCollide : MonoBehaviour {
     public Player p;
 	void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("obstacle"))
+        if(other.CompareTag("Obstacle"))
         {
-            //Slow the player?
+            //Slow tiles
+            TileSpawner.instance.Collision();
             Debug.Log("Hit");
         }
     }

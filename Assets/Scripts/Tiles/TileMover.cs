@@ -10,7 +10,6 @@ public class TileMover : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         rb = GetComponent<Rigidbody>();
-        speed = 0.05f;
 	}
 	
 	// Update is called once per frame
