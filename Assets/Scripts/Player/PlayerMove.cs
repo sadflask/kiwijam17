@@ -10,6 +10,8 @@ public class PlayerMove : MonoBehaviour {
     private Vector3 startPosition;
     private Vector3 targetPosition;
 
+    bool jumping, ducking;
+
     void Awake()
     {
         startPosition = transform.position;
@@ -29,14 +31,40 @@ public class PlayerMove : MonoBehaviour {
             targetPosition = startPosition + lane * Vector3.right * 0.3f;
         } else if (Input.GetKeyUp(KeyCode.UpArrow))
         {
+            if (!(jumping || ducking)) StartCoroutine(Jump());
             //Jump thing
         } else if (Input.GetKeyUp(KeyCode.PageDown))
         {
             //Slide thing
+            if (!(jumping || ducking)) StartCoroutine(Duck());
         }
         //Lerp
         transform.position = Vector3.Lerp(transform.position,targetPosition,0.25f);
 	}
+    IEnumerator Jump()
+    {
+        jumping = true;
+        float start = Time.time;
+        float elapsed = 0;
+        while(elapsed < 0.5f)
+        {
+            targetPosition.y = 7.5f * elapsed * (0.5f - elapsed) + 0.15f;
+            yield return new WaitForSeconds(0.01f);
+            elapsed = Time.time - start;
+        }
+        jumping = false;
+    }
+    IEnumerator Duck()
+    {
+        ducking = true;
+        float start = Time.time;
+        float elapsed = 0;
+        while (elapsed < 0.5f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            elapsed = Time.time - start;
+        }
+        ducking = false;
+    }
 
-    
 }
