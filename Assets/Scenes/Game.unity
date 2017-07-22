@@ -283,6 +283,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e05f7a25d474647822749e3e91b970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lane: 0
+  startPosition: {x: 0, y: 0, z: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  startRotation: {x: 0, y: 0, z: 0, w: 0}
+  jumping: 0
+  ducking: 0
 --- !u!1 &496154682
 GameObject:
   m_ObjectHideFlags: 0

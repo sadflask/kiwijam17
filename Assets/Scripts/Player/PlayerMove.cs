@@ -6,7 +6,6 @@ public class PlayerMove : MonoBehaviour {
 
     //-1 0 1
     private int lane;
-
     private Vector3 startPosition, targetPosition;
     private Quaternion startRotation;
 

@@ -14,7 +14,7 @@ public class TileSpawner : MonoBehaviour {
     private float[] tileSpawnChances = { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f };
 
     //Might not need
-    private GameObject[] spawnedTiles;
+    private List<GameObject> spawnedTiles;
 
     [SerializeField]
     private Transform spawnPosition;
@@ -47,6 +47,7 @@ public class TileSpawner : MonoBehaviour {
                 {
                     lastTile = SpawnTile(lastTile.transform.position -Vector3.back);
                 }
+                spawnedTiles.Add(lastTile);
                 numberSpawnedTiles++;
             }
     }
